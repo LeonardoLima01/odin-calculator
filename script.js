@@ -136,3 +136,94 @@ numbers = document.querySelectorAll('#number');
         })
     }
 
+// CLEAR EVENT LISTENER
+clearButton.addEventListener('click', () =>{
+    document.querySelector('#display p').innerHTML = '0';
+    document.querySelector('#display div').innerHTML = '';
+    displayValue = 0;
+    currentOperator = null;
+    currentOperatorSymbol = null;
+    updatedOperatorSymbol = null;
+    numbers = [];
+    multipleOperation = false;
+})  
+
+
+// DELETE EVENT LISTENER
+deleteButton = document.querySelector('#delete');
+
+deleteButton.addEventListener('click', () =>{
+
+    // if thing to be deleted is an operator
+    if (displayValue[displayValue.length - 1] == '+' || displayValue[displayValue.length - 1] == '-' || displayValue[displayValue.length - 1] == '*' || displayValue[displayValue.length - 1]                                        == '/'){
+        displayValue = displayValue.slice(0, displayValue.length - 2)
+        document.querySelector('#display p').innerHTML = displayValue
+    }
+
+    // if it's a number
+    else{
+
+        // delete 2 times on 1 click when there is space before number to make user click less
+        if (displayValue[displayValue.length - 2] == ' '){
+            displayValue = displayValue.slice(0,(displayValue.length - 2))
+            document.querySelector('#display p').innerHTML = displayValue
+        }
+
+        // else just delete 1 num for click
+        else{
+            if (displayValue != 0){
+                if (displayValue.toString().length > 1){
+                    displayValue = displayValue.toString().slice(0,displayValue.toString().length - 1)
+                    document.querySelector('#display p').innerHTML = displayValue 
+                }
+                else{
+                    displayValue = '0'
+                    document.querySelector('#display p').innerHTML = displayValue
+                }
+            }
+        }
+    }
+})
+
+
+// Get logical operator function (changing 'currentOperator' variable value)
+const getOperator = () =>{
+    (currentOperatorSymbol == '+')? currentOperator = 'add' :
+    (currentOperatorSymbol == '-')? currentOperator = 'subtract' :
+    (currentOperatorSymbol == '*')? currentOperator = 'multiply' :
+    currentOperator = 'divide'
+}
+
+// EQUAL EVENT LISTENER
+equalButton = document.querySelector('#equals')
+
+equalButton.addEventListener('click', () =>{
+
+    // check for message outputted when user divides something by 0
+    checkDivideBy0();
+
+    if(searchForOperators() != false){
+        // Get array of numbers before and after operator ([0] and [1])
+        numbers = document.querySelector('#display p').innerHTML.split(`${currentOperatorSymbol}`);
+        numbers[0] = numbers[0].trim();
+        numbers[1] = numbers[1].trim();
+
+        // Update 'currentOperator' variable value
+        getOperator();
+        const operationResult = operate(currentOperator, numbers[0], numbers[1])
+
+        document.querySelector('#display div').innerHTML = displayValue + ' =';
+        document.querySelector('#display p').innerHTML = operationResult;
+
+        if (multipleOperation){
+            document.querySelector('#display p').innerHTML = operationResult + ' ' + `${updatedOperatorSymbol}` + ' '
+            document.querySelector('#display div').innerHTML = displayValue + ' =';
+            multipleOperation = false;
+        }
+        displayValue = operationResult;
+    }
+    else{
+        displayValue = displayValue + ' ' + updatedOperatorSymbol + ' '
+        document.querySelector('#display p').innerHTML = displayValue;
+    }
+})
