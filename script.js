@@ -202,28 +202,32 @@ equalButton.addEventListener('click', () =>{
     // check for message outputted when user divides something by 0
     checkDivideBy0();
 
-    if(searchForOperators() != false){
-        // Get array of numbers before and after operator ([0] and [1])
-        numbers = document.querySelector('#display p').innerHTML.split(`${currentOperatorSymbol}`);
-        numbers[0] = numbers[0].trim();
-        numbers[1] = numbers[1].trim();
+    if(displayValue != 0){
+        if(searchForOperators() != false){
+            // Get array of numbers before and after operator ([0] and [1])
+            numbers = document.querySelector('#display p').innerHTML.split(`${currentOperatorSymbol}`);
+            numbers[0] = numbers[0].trim();
+            numbers[1] = numbers[1].trim();
 
-        // Update 'currentOperator' variable value
-        getOperator();
-        const operationResult = operate(currentOperator, numbers[0], numbers[1])
+            // Update 'currentOperator' variable value
+            getOperator();
+            const operationResult = operate(currentOperator, numbers[0], numbers[1])
 
-        document.querySelector('#display div').innerHTML = displayValue + ' =';
-        document.querySelector('#display p').innerHTML = operationResult;
-
-        if (multipleOperation){
-            document.querySelector('#display p').innerHTML = operationResult + ' ' + `${updatedOperatorSymbol}` + ' '
             document.querySelector('#display div').innerHTML = displayValue + ' =';
-            multipleOperation = false;
+            document.querySelector('#display p').innerHTML = operationResult;
+
+            if (multipleOperation){
+                document.querySelector('#display p').innerHTML = operationResult + ' ' + `${updatedOperatorSymbol}` + ' '
+                document.querySelector('#display div').innerHTML = displayValue + ' =';
+                multipleOperation = false;
+            }
+            displayValue = operationResult;
         }
-        displayValue = operationResult;
-    }
-    else{
-        displayValue = displayValue + ' ' + updatedOperatorSymbol + ' '
-        document.querySelector('#display p').innerHTML = displayValue;
+        else{
+            if (updatedOperatorSymbol != null){
+                displayValue = displayValue + ' ' + updatedOperatorSymbol + ' '
+                document.querySelector('#display p').innerHTML = displayValue;
+            }
+        }
     }
 })
