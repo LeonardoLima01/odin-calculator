@@ -113,3 +113,26 @@ let operatorButtons = document.querySelectorAll('#operator');
             }
     })};
 
+// NUMBERS EVENT LISTENERS
+numbers = document.querySelectorAll('#number');
+
+    for (let i of Array.from(numbers)){
+        i.addEventListener('click', () =>{
+
+            // check for message outputted when user divides something by 0
+            checkDivideBy0();
+
+            // if delete was used with 2 spaces at a time, this compensates with + ' ' to maintain indentation
+            if (displayValue[displayValue.length - 1] == '+' || displayValue[displayValue.length - 1] == '-' || displayValue[displayValue.length - 1] == '*' || displayValue[displayValue.length - 1] == '/'){
+                number = i.textContent;
+                document.querySelector('#display p').innerHTML == '0'? document.querySelector('#display p').innerHTML = number : document.querySelector('#display p').innerHTML += ' ' + number;
+                displayValue = document.querySelector('#display p').innerHTML;
+            }
+            else{
+                number = i.textContent;
+                document.querySelector('#display p').innerHTML == '0'? document.querySelector('#display p').innerHTML = number : document.querySelector('#display p').innerHTML += number;
+                displayValue = document.querySelector('#display p').innerHTML;
+            }
+        })
+    }
+
