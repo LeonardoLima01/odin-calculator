@@ -86,3 +86,30 @@ dotButton.addEventListener('click', () =>{
         }
     }
 })
+
+
+// OPERATORS EVENT LISTENERS
+let operatorButtons = document.querySelectorAll('#operator');
+
+    for(let i of Array.from(operatorButtons)){
+        i.addEventListener('click', () =>{
+            // if user's trying to do a multiple operation(5*3-5/4)
+            if (currentOperatorSymbol != null && currentOperator != i.textContent){
+
+                // check for message outputted when user divides something by 0
+                checkDivideBy0();
+
+                equalButton = document.querySelector('#equals')
+
+                updatedOperatorSymbol = i.textContent;
+
+                multipleOperation = true;
+                equalButton.dispatchEvent(new Event("click"));
+                currentOperatorSymbol = i.textContent;
+            }
+            else{
+            currentOperatorSymbol = i.textContent;
+                    document.querySelector('#display p').innerHTML += ' '+ currentOperatorSymbol + ' ';
+            }
+    })};
+
